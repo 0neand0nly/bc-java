@@ -1,5 +1,6 @@
 package org.bouncycastle.pqc.crypto.crystals.dilithium;
 
+import org.bouncycastle.crypto.StreamCipher;
 import org.bouncycastle.crypto.digests.SHAKEDigest;
 import org.bouncycastle.crypto.engines.AESEngine;
 import org.bouncycastle.crypto.modes.SICBlockCipher;
@@ -30,7 +31,7 @@ abstract class Symmetric
         extends Symmetric
     {
 
-        private final SICBlockCipher cipher;
+        private final StreamCipher cipher;
 
         AesSymmetric()
         {

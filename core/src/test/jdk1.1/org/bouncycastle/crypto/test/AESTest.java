@@ -267,7 +267,7 @@ public class AESTest
         CipherParameters params = new ParametersWithIV(new KeyParameter(Hex.decode("5F060D3716B345C253F6749ABAC10917")), Hex.decode("00000000000000000000000000000000"));
         CTRModeCipher engine = SICBlockCipher.newInstance(AESEngine.newInstance());
 
-        engine.init(true, params);
+        ((BlockCipher)engine).init(true, params);
 
         SecureRandom rand = new SecureRandom();
         byte[]       plain = new byte[50000];
@@ -278,7 +278,7 @@ public class AESTest
 
         byte[]      fragment = new byte[20];
 
-        engine.init(true, params);
+        ((BlockCipher)engine).init(true, params);
 
         engine.skip(10);
 
@@ -350,7 +350,7 @@ public class AESTest
             fail("seek to 1010 failed");
         }
 
-        engine.reset();
+        ((BlockCipher)engine).reset();
 
         for (int i = 0; i != 5000; i++)
         {
@@ -387,7 +387,7 @@ public class AESTest
                 fail("skip back i failed: " + i);
             }
 
-            engine.reset();
+            ((BlockCipher)engine).reset();
         }
     }
 
@@ -396,7 +396,7 @@ public class AESTest
         CipherParameters params = new ParametersWithIV(new KeyParameter(Hex.decode("5F060D3716B345C253F6749ABAC10917")), Hex.decode("000000000000000000000000000000"));
         CTRModeCipher engine = SICBlockCipher.newInstance(AESEngine.newInstance());
 
-        engine.init(true, params);
+        ((BlockCipher)engine).init(true, params);
 
         SecureRandom rand = new SecureRandom();
         byte[]       cipher = new byte[256 * 16 + 1];
@@ -405,10 +405,10 @@ public class AESTest
         rand.nextBytes(plain);
         engine.processBytes(plain, 0, plain.length, cipher, 0);
 
-        engine.init(true, params);
+        ((BlockCipher)engine).init(true, params);
 
         plain = new byte[256 * 16 + 1];
-        engine.init(true, params);
+        ((BlockCipher)engine).init(true, params);
 
         try
         {
@@ -432,7 +432,7 @@ public class AESTest
         byte[] key = new byte[16];
 
         Arrays.fill(iv, (byte)0x0a);
-        cipher.init(true, new ParametersWithIV(new KeyParameter(key), iv));
+        ((BlockCipher)cipher).init(true, new ParametersWithIV(new KeyParameter(key), iv));
 
         int lastBlock = 255; // the last block
         cipher.seekTo((lastBlock * 16));
@@ -473,7 +473,7 @@ public class AESTest
         for (int fragmentLength = 1; fragmentLength < 16; ++fragmentLength)
         {
             byte[] fragment = new byte[fragmentLength];
-            engine.init(true, new ParametersWithIV(kp, new byte[16]));
+            ((BlockCipher)engine).init(true, new ParametersWithIV(kp, new byte[16]));
 
             int inPos = 0, outPos = 0;
             do

@@ -10,6 +10,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.bouncycastle.util.Strings;
 
@@ -633,7 +634,9 @@ public class ArmoredOutputStream
                 {
                     throw new IllegalArgumentException("Armor header value for key " + key + " cannot contain newlines.");
                 }
-                this.headers.put(key, Collections.singletonList(value));
+                List h = new ArrayList();
+                h.add(value);
+                this.headers.put(key, h);
             }
             return this;
         }
@@ -661,14 +664,14 @@ public class ArmoredOutputStream
 
             // handle multi-line values
             String trimmed = value.trim();
-            String[] lines = trimmed.split("\n");
-            for (int i = 0; i != lines.length; i++)
+            for (StringTokenizer sTok = new StringTokenizer(trimmed, "\n"); sTok.hasMoreTokens();)
             {
-                if (lines[i].trim().length() == 0)
+                String line = sTok.nextToken().trim();
+                if (line.length() == 0)
                 {
                     continue;
                 }
-                values.add(lines[i].trim());
+                values.add(line);
             }
             return this;
         }
@@ -693,14 +696,14 @@ public class ArmoredOutputStream
 
             // handle multi-line values
             String trimmed = value.trim();
-            String[] lines = trimmed.split("\n");
-            for (int i = 0; i != lines.length; i++)
+            for (StringTokenizer sTok = new StringTokenizer(trimmed, "\n"); sTok.hasMoreTokens();)
             {
-                if (lines[i].trim().length() == 0)
+                String line = sTok.nextToken().trim();
+                if (line.length() == 0)
                 {
                     continue;
                 }
-                values.add(lines[i].trim());
+                values.add(line);
             }
 
             headers.put(key, values);
